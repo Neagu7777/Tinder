@@ -2,8 +2,8 @@ package de.telran.person.controller;
 
 import de.telran.person.service.PersonService;
 import de.telran.person.entity.Person;
+import de.telran.person.service.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,30 +24,19 @@ public class PersonController {
         return person;
     }
 
-//    @PostMapping(value = "/person")
-//    public void savePerson(@RequestBody Person person) {
-//        personService.save(person);
-//    }
+    @PostMapping(value = "/person")
+    public void savePerson(@RequestBody Person person) {
+        personService.save(person);
+    }
 
     @DeleteMapping(value = "/person/{id}")
     public void deleteById(@PathVariable(value = "id") Integer id) {
         personService.deleteById(id);
     }
 
-//    @PutMapping(value = "/person/{id}")
-//    public void updatePersonrById(@PathVariable(value = "id") Integer id, @RequestBody Person person) {
-//        personService.update(id, person);
-//    }
-
     @PutMapping(value = "/person/{id}")
     public void updatePersonrById(@PathVariable(value = "id") Integer id, @RequestBody Person person) {
         personService.update(id, person);
     }
-    @PostMapping(value = "/person")
-    public ResponseEntity<String> savePerson() {
-        personService.savePerson();
-        return ResponseEntity.ok("Person saved successfully");
-    }
+
 }
-
-

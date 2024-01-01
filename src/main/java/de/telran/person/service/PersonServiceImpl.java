@@ -1,10 +1,10 @@
-
 package de.telran.person.service;
 
 import de.telran.person.entity.Person;
 import de.telran.person.repository.PersonRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -17,7 +17,11 @@ public class PersonServiceImpl implements PersonService {
     public Person getById(Integer id) {
         Optional<Person> optional = personRepository.findById(id);
 
-        return optional.orElse(null);
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -44,24 +48,13 @@ public class PersonServiceImpl implements PersonService {
             return;
         }
 
-        Optional<Person> persistPersonOptional = personRepository.findById(id); //находим человека
+        Optional<Person> persistPersonOptional = personRepository.findById(id);
 
-        if (persistPersonOptional.isPresent()) { //если есть
+        if (persistPersonOptional.isPresent()) {
             Person persistPerson = persistPersonOptional.get();
-            persistPerson.setName(person.getName()); //в старое имя устанавливаем новое имя
+            persistPerson.setName(person.getName());
             persistPerson.setStatus(person.getStatus()); // Изменение статуса
-            personRepository.save(persistPerson); //пересохраняем
+            personRepository.save(persistPerson);
         }
     }
-
-    @Override
-    public void savePersonChange() {
-
-    }
-
-    @Override
-    public void savePerson() {
-
-    }
 }
-
