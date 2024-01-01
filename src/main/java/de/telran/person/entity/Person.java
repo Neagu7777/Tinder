@@ -7,12 +7,15 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.Getter;
 import org.hibernate.annotations.Type;
-
+@Getter
 @Data
 @Entity
 @Table(name = "person")
 public class Person {
+
+
 
     @Id
     @Column(name = "Id")
@@ -33,6 +36,16 @@ public class Person {
     @Enumerated(EnumType.STRING)
     @Column(name = "Status", columnDefinition = "status_enum")
     private Status status;
+
+    @Column(name = "Description")
+    private String description;
+
+    @Column(name = "Rating")
+    private int rating;
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
 
     // Геттеры и сеттеры
 }

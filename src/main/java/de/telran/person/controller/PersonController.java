@@ -2,15 +2,11 @@ package de.telran.person.controller;
 
 import de.telran.person.service.PersonService;
 import de.telran.person.entity.Person;
-import de.telran.person.service.PersonService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -39,4 +35,24 @@ public class PersonController {
         personService.update(id, person);
     }
 
+    @GetMapping(value = "/person/rating")
+    public List<Person> findPeopleByRatingRange(
+            @RequestParam(value = "minRating") int minRating,
+            @RequestParam(value = "maxRating") int maxRating) {
+        return personService.findPeopleByRatingRange(minRating, maxRating);
+    }
+
+    @GetMapping(value = "/person/count")
+    public long countPeopleByDescriptionContains(@RequestParam(value = "keyword") String keyword) {
+        return personService.countPeopleByDescriptionContains(keyword);
+    }
+
+    @GetMapping(value = "/person/exists")
+    public boolean doesPersonExistById(@RequestParam(value = "id") Integer id) {
+        return personService.doesPersonExistById(id);
+    }
+    @GetMapping(value = "/person/all")
+    public Page<Person> getAllPeopleWithPagination(Pageable pageable) {
+        return personService.getAllPeopleWithPagination(pageable);
+    }
 }
