@@ -55,4 +55,5 @@ public class PersonController {
     public Page<Person> getAllPeopleWithPagination(Pageable pageable) {
         return personService.getAllPeopleWithPagination(pageable);
     }
+
 }

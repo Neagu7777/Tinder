@@ -4,6 +4,8 @@ import de.telran.person.entity.Person;
 import de.telran.person.repository.PersonRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -72,10 +74,11 @@ public class PersonServiceImpl implements PersonService {
     public boolean doesPersonExistById(Integer id) {
         return personRepository.existsById(id);
     }
-    };
+
 
    @Override
    public Page<Person> getAllPeopleWithPagination(Pageable pageable) {
         return personRepository.findAll(pageable);
-        }
-        }
+   }
+
+}
