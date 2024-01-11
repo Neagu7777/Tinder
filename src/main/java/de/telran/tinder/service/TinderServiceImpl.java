@@ -1,7 +1,7 @@
-package de.telran.person.service;
+package de.telran.tinder.service;
 
-import de.telran.person.entity.Person;
-import de.telran.person.repository.PersonRepository;
+import de.telran.tinder.entity.Person;
+import de.telran.tinder.repository.TinderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,19 +13,19 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-public class PersonServiceImpl implements PersonService {
+public class TinderServiceImpl implements TinderService {
 
-    private final PersonRepository personRepository;
+    private final TinderRepository tinderRepository;
 
     @Override
     public Person getById(Integer id) {
-        return personRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Person not found with id: " + id));
+        return tinderRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Person not found with id: " + id));
     }
 
     @Override
     public void save(Person person) {
         if (person != null) {
-            personRepository.save(person);
+            tinderRepository.save(person);
         } else {
             throw new IllegalArgumentException("Person cannot be null");
         }
@@ -34,7 +34,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deleteById(Integer id) {
         if (id != null) {
-            personRepository.deleteById(id);
+            tinderRepository.deleteById(id);
         } else {
             throw new IllegalArgumentException("Id cannot be null");
         }
@@ -42,7 +42,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void update(Integer id, Person person) {
-        Optional<Person> persistPersonOptional = personRepository.findById(id);
+        Optional<Person> persistPersonOptional = tinderRepository.findById(id);
 
         persistPersonOptional.ifPresent(persistPerson -> {
             if (person.getName() != null) {
@@ -56,29 +56,53 @@ public class PersonServiceImpl implements PersonService {
             int defaultRating = -1;
             persistPerson.setRating(person.getRating() != defaultRating ? person.getRating() : defaultRating);
 
-            personRepository.save(persistPerson);
+            tinderRepository.save(persistPerson);
         });
     }
 
     @Override
     public List<Person> findPeopleByRatingRange(int minRating, int maxRating) {
-        return personRepository.findByRatingBetween(minRating, maxRating);
+        return tinderRepository.findByRatingBetween(minRating, maxRating);
     }
 
     @Override
     public long countPeopleByDescriptionContains(String keyword) {
-        return personRepository.countByDescriptionContainingIgnoreCase(keyword);
+        return tinderRepository.countByDescriptionContainingIgnoreCase(keyword);
     }
 
     @Override
     public boolean doesPersonExistById(Integer id) {
-        return personRepository.existsById(id);
+        return tinderRepository.existsById(id);
     }
 
 
    @Override
    public Page<Person> getAllPeopleWithPagination(Pageable pageable) {
-        return personRepository.findAll(pageable);
+        return tinderRepository.findAll(pageable);
    }
+
+    @Override
+    public void addPointsToUser(Integer userId, int points) {
+        Person user = getById(userId);
+        user.setRating(user.getRating() + points);
+        save(user);
+    }
+
+    @Override
+    public void subtractPointsFromUser(Integer userId, int points) {
+        Person user = getById(userId);
+        user.setRating(user.getRating() - points);
+        save(user);
+    }
+
+    @Override
+    public List<Person> getAllUsers() {
+        return null;
+    }
+
+    @Override
+    public Person getRandomUser(List<Person> allUsers) {
+        return null;
+    }
 
 }

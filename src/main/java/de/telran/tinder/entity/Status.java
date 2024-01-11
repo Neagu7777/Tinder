@@ -1,6 +1,5 @@
-package de.telran.person.entity;
+package de.telran.tinder.entity;
 
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
